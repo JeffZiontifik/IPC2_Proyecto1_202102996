@@ -1,0 +1,86 @@
+mi_proyecto/
+├── main.py              # Archivo principal
+├── menu.py              # Manejo del menú
+├── lector_xml.py        # Lectura y procesamiento del XML
+├── nodo.py              # Clase Nodo
+├── lista_enlazada.py    # Clase Lista
+├── datos.xml            # Tu archivo XML
+└── utils.py             # Funciones auxiliares (opcional)
+
+class Menu:
+    def __init__(self):
+        self.opciones = {
+            1: self.cargar_archivo,
+            2: self.procesar_archivo,
+            3: self.escribir_salida,
+            4: self.mostrar_datos_estudiante,
+            5: self.generar_grafica,
+            6: self.salir
+        }
+        self.ejecutando = True
+
+    def mostrar_menu(self):
+        print("-" * 49)
+        print("              Menú Principal")
+        print("-" * 49)
+        print("1. Cargar archivo")
+        print("2. Procesar archivo")
+        print("3. Escribir archivo salida")
+        print("4. Mostrar datos del estudiante")
+        print("5. Generar gráfica")
+        print("6. Salir")
+        print("-" * 49)
+
+    def ejecutar(self):
+        while self.ejecutando:
+            self.mostrar_menu()
+            
+            try:
+                opcion = int(input("Ingrese una opción: "))
+                if opcion in self.opciones:
+                    self.opciones[opcion]()
+                else:
+                    print("Opción inválida. Intente de nuevo.")
+                    self.pausar()
+            except ValueError:
+                print("Error: Debe ingresar un número.")
+                self.pausar()
+
+    def cargar_archivo(self):
+        print("\nOpción 1: Cargar archivo")
+        # Aquí va tu lógica para cargar archivo
+        self.pausar()
+
+    def procesar_archivo(self):
+        print("\nOpción 2: Procesar archivo")
+        # Aquí va tu lógica para procesar
+        self.pausar()
+
+    def escribir_salida(self):
+        print("\nOpción 3: Escribir archivo salida")
+        # Aquí va tu lógica para escribir
+        self.pausar()
+
+    def mostrar_datos_estudiante(self):
+        print("\n" + "-" * 49)
+        print("           Datos del estudiante")
+        print("-" * 49)
+        print("Nombre: Anferny Jefferson Jolón Palencia")
+        print("Carné: 202102996")
+        print("Curso: Introducción a la Programación y Computación 2")
+        print("Sección: N")
+        print("Documentación: [Link o descripción]")
+        print("-" * 49)
+        self.pausar()
+
+    def generar_grafica(self):
+        print("\nOpción 5: Generar gráfica")
+        # Aquí va tu lógica para generar gráfica
+        self.pausar()
+
+    def salir(self):
+        print("\nSaliendo del programa...")
+        self.ejecutando = False
+
+    def pausar(self):
+        input("\nPresiona Enter para continuar...")
