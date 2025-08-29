@@ -1,20 +1,11 @@
 import os
-from lector_xml import leer_archivo
+from lector_xml import leer_archivo, leer_datos_campo, leer_estaciones_base, leer_sensores_suelo, leer_frecuencias_suelo, leer_sensores_cultivo
+from xml.etree import ElementTree as ET
+
 #Creamos nuestro menu principal
 class Menu:
     def __init__(self):
-
         self.ruta_del_archivo = None
-        #Método o función constructor que genera el menú
-        #Usamos un diccionario para almacenar las opciones del menú
-        self.opciones = {
-            1: self.cargar_archivo,
-            2: self.procesar_archivo,
-            3: self.escribir_salida,
-            4: self.mostrar_datos_estudiante,
-            5: self.generar_grafica,
-            6: self.salir
-        }
         self.ejecutando = True
 
     #Método o función que muestra las opciones del menú
@@ -37,11 +28,23 @@ class Menu:
             
             try:
                 opcion = int(input("Ingrese una opción: "))
-                if opcion in self.opciones:
-                    self.opciones[opcion]()
+                
+                if opcion == 1:
+                    self.cargar_archivo()
+                elif opcion == 2:
+                    self.procesar_archivo()
+                elif opcion == 3:
+                    self.escribir_salida()
+                elif opcion == 4:
+                    self.mostrar_datos_estudiante()
+                elif opcion == 5:
+                    self.generar_grafica()
+                elif opcion == 6:
+                    self.salir()
                 else:
                     print("Opción inválida. Intente de nuevo.")
                     self.pausar()
+                    
             except ValueError:
                 print("Error: Debe ingresar un número.")
                 self.pausar()
@@ -68,8 +71,19 @@ class Menu:
             print("Debe de cargar un archivo primero.")
             return
         try:
-            leer_archivo(self.ruta_del_archivo)
+            # Parseamos la ruta del archivo XML y leemos su contenido
+            tree = ET.parse(self.ruta_del_archivo)
+            root = tree.getroot()
+
+            # Llamamos a las funciones para leer los datos del XML
+            for campo in root.findall('campo'):
+                leer_datos_campo(campo)
+                leer_estaciones_base(campo)
+                leer_sensores_suelo(campo)
+                leer_sensores_cultivo(campo)
+    
             print("El archivo ha sido procesado correctamente.")
+
         except Exception as e:
             print(f"Error al procesar el archivo: {e}")
         # Aquí va tu lógica para procesar
