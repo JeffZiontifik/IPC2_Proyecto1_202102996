@@ -1,5 +1,6 @@
 import os
 from lector_xml import leer_archivo, leer_datos_campo, leer_estaciones_base, leer_sensores_suelo, leer_frecuencias_suelo, leer_sensores_cultivo
+from procesador_matrices import procesar_campo_agricola
 from xml.etree import ElementTree as ET
 
 #Creamos nuestro menu principal
@@ -7,6 +8,7 @@ class Menu:
     def __init__(self):
         self.ruta_del_archivo = None
         self.ejecutando = True
+        self.campos_cargados = None
 
     #Método o función que muestra las opciones del menú
     def mostrar_menu(self):
@@ -67,26 +69,32 @@ class Menu:
     #Método o función para procesar el archivo .xml
     def procesar_archivo(self):
         print("\nOpción 2: Procesar archivo")
-        if self.ruta_del_archivo is None:
-            print("Debe de cargar un archivo primero.")
+        if self.ruta_del_archivo is None or self.campos_cargados is None:
+            print("Error: Debe cargar un archivo primero.")
+            self.pausar()
             return
+        
         try:
-            # Parseamos la ruta del archivo XML y leemos su contenido
-            tree = ET.parse(self.ruta_del_archivo)
-            root = tree.getroot()
-
-            # Llamamos a las funciones para leer los datos del XML
-            for campo in root.findall('campo'):
-                leer_datos_campo(campo)
-                leer_estaciones_base(campo)
-                leer_sensores_suelo(campo)
-                leer_sensores_cultivo(campo)
-    
-            print("El archivo ha sido procesado correctamente.")
-
+            print("Iniciando procesamiento de matrices y patrones...")
+            print("=" * 60)
+            
+            # procesamos cada campo agricola cargado
+            for campo in self.campos_cargados.iterar():
+                print(f"\n>>> Procesando campo: {campo.nombre}")
+                procesador, grupos = procesar_campo_agricola(campo)
+                
+                # guardamos el procesador en el campo para usarlo despues
+                campo.procesador = procesador
+                campo.grupos_estaciones = grupos
+                
+                print(f"Campo {campo.id} procesado exitosamente!")
+                print("=" * 60)
+            
+            print("\nTodos los campos han sido procesados correctamente.")
+            
         except Exception as e:
             print(f"Error al procesar el archivo: {e}")
-        # Aquí va tu lógica para procesar
+        
         self.pausar()
 
     #Método o función para generar el archivo de salida .xml
