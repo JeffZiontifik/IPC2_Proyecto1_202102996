@@ -1,4 +1,4 @@
-# >Lector XML
+# Lector XML
 
 import xml.etree.ElementTree as ET
 from estructura_datos.lista_enlazada import Lista
