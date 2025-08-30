@@ -1,4 +1,3 @@
-
 # Métodos que nos sirven para almacenar los datos que leemos del XML
 
 class DatosCampo:

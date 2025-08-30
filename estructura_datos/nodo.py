@@ -1,4 +1,4 @@
-from lista_enlazada import Lista
+# CLase Nodo
 
 class Nodo: 
     def __init__(self, dato = None, siguiente = None):
